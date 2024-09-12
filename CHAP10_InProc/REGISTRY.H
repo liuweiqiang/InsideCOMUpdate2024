@@ -9,14 +9,14 @@
 // The component calls this function from its DllRegisterServer function.
 HRESULT RegisterServer(HMODULE hModule, 
                        const CLSID& clsid, 
-                       const char* szFriendlyName,
-                       const char* szVerIndProgID,
-                       const char* szProgID) ;
+                       const wchar_t* szFriendlyName,
+                       const wchar_t* szVerIndProgID,
+                       const wchar_t* szProgID) ;
 
 // This function will unregister a component.  Components
 // call this function from their DllUnregisterServer function.
 HRESULT UnregisterServer(const CLSID& clsid,
-                         const char* szVerIndProgID,
-                         const char* szProgID) ;
+                         const wchar_t* szVerIndProgID,
+                         const wchar_t* szProgID) ;
 
 #endif

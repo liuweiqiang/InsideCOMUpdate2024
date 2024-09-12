@@ -244,7 +244,7 @@ STDAPI DllUnregisterServer()
 //
 // DLL module information
 //
-BOOL APIENTRY DllMain(HANDLE hModule, 
+BOOL APIENTRY DllMain(HMODULE hModule,
                       DWORD dwReason, 
                       void* lpReserved )
 {

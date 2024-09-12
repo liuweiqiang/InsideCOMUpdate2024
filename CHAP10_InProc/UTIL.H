@@ -1,14 +1,14 @@
 #ifndef __Util_h__
 #define __Util_h__
+#include <iostream>
+using namespace std;
 
 //
 // Util.h - Shared utilities
 //
-#include <strstrea.h>
-
 namespace Util
 {
-	void Trace(char* szLabel, char* szText, HRESULT hr) ;
+	void Trace(const wchar_t* szLabel, const wchar_t* szText, HRESULT hr) ;
 
 	void ErrorMessage(HRESULT hr) ;
 } ;

@@ -2,16 +2,18 @@
 // Cmpnt3.cpp - Component 3
 //
 #include <objbase.h>
+#include <iostream>
+#include <sstream>
 
 #include "Iface.h"
 #include "Util.h"
 #include "CUnknown.h"
 #include "Cmpnt3.h"
 
-static inline void trace(char* msg)
-	{ Util::Trace("Component 3", msg, S_OK) ;}
-static inline void trace(char* msg, HRESULT hr)
-	{ Util::Trace("Component 3", msg, hr) ;}
+static inline void trace(const wchar_t* msg)
+	{ Util::Trace(L"Component 3", msg, S_OK) ;}
+static inline void trace(const wchar_t* msg, HRESULT hr)
+	{ Util::Trace(L"Component 3", msg, hr) ;}
 
 ///////////////////////////////////////////////////////////
 //
@@ -19,13 +21,13 @@ static inline void trace(char* msg, HRESULT hr)
 //
 HRESULT __stdcall CC::FzStructIn(Point3d pt)
 { 
-	strstream sout ;
+	wostringstream sout ;
 	sout << "FzStructIn received ("
 	     << pt.x << ", "
 	     << pt.y << ", "
 	     << pt.z << ")."
 	     << ends ;
-	trace(sout.str()) ;
+	trace(sout.str().c_str()) ;
 
 	m_pt = pt ;
 	return S_OK ;
@@ -50,7 +52,7 @@ CC::CC(IUnknown* pUnknownOuter)
 
 CC::~CC() 
 {
-	trace("Destroy self.") ;
+	trace(L"Destroy self.") ;
 }
 
 //

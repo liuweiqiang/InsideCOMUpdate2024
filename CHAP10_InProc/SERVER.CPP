@@ -29,19 +29,19 @@
 CFactoryData g_FactoryDataArray[] =
 {
 	{&CLSID_Component1, CA::CreateInstance, 
-		"Inside COM, Chapter 10 Example, Component 1", // Friendly Name
-		"InsideCOM.Chap10.Cmpnt1.1",     // ProgID
-		"InsideCOM.Chap10.Cmpnt1",       // Version-independent ProgID
+		L"Inside COM, Chapter 10 Example, Component 1", // Friendly Name
+		L"InsideCOM.Chap10.Cmpnt1.1",     // ProgID
+		L"InsideCOM.Chap10.Cmpnt1",       // Version-independent ProgID
 		NULL, 0},	
 	{&CLSID_Component2, CB::CreateInstance, 
-		"Inside COM, Chapter 10 Example, Component 2",
-		"InsideCOM.Chap10.Cmpnt2.1",
-		"InsideCOM.Chap10.Cmpnt2",
+		L"Inside COM, Chapter 10 Example, Component 2",
+		L"InsideCOM.Chap10.Cmpnt2.1",
+		L"InsideCOM.Chap10.Cmpnt2",
 		NULL, 0},	
 	{&CLSID_Component3, CC::CreateInstance, 
-		"Inside COM, Chapter 10 Example, Component 3",
-		"InsideCOM.Chap10.Cmpnt3.1",
-		"InsideCOM.Chap10.Cmpnt3",
+		L"Inside COM, Chapter 10 Example, Component 3",
+		L"InsideCOM.Chap10.Cmpnt3.1",
+		L"InsideCOM.Chap10.Cmpnt3",
 		NULL, 0}
 } ;
 int g_cFactoryDataEntries

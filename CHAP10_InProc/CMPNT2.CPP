@@ -2,16 +2,20 @@
 // Cmpnt2.cpp - Component 2
 //
 #include <objbase.h>
+#include <iostream>
+#include <sstream>
 
 #include "Iface.h"
 #include "Util.h"
 #include "CUnknown.h"
 #include "Cmpnt2.h"
 
-static inline void trace(char* msg)
-	{ Util::Trace("Component 2", msg, S_OK) ;}
-static inline void trace(char* msg, HRESULT hr)
-	{ Util::Trace("Component 2", msg, hr) ;}
+using namespace std;
+
+static inline void trace(const wchar_t* msg)
+	{ Util::Trace(L"Component 2", msg, S_OK) ;}
+static inline void trace(const wchar_t* msg, HRESULT hr)
+	{ Util::Trace(L"Component 2", msg, hr) ;}
 
 ///////////////////////////////////////////////////////////
 //
@@ -27,16 +31,16 @@ HRESULT __stdcall CB::FyCount(long* sizeArray)
 HRESULT __stdcall CB::FyArrayIn(long sizeIn, long arrayIn[])
 {
 	// Display the array passed in.
-	ostrstream sout ;
-	sout << "FyArrayIn received " 
+	wostringstream sout ;
+	sout << L"FyArrayIn received " 
 	     << sizeIn
-	     << " elements: " ;
+	     << L" elements: " ;
 	for (int i = 0 ; i < sizeIn ; i++)
 	{
 		sout << " " << arrayIn[i] ;
 	}
-	sout << "." << ends ;
-	trace(sout.str()) ;
+	sout << L"." << ends ;
+	trace(sout.str().c_str()) ;
 
 	// Delete the internal array.
 	delete [] m_array ;
@@ -46,7 +50,7 @@ HRESULT __stdcall CB::FyArrayIn(long sizeIn, long arrayIn[])
 	m_sizeArray = sizeIn ;
 
 	// Copy the array passed in into the internal array.
-	for (i = 0 ; i < sizeIn ; i++)
+	for (int i = 0 ; i < sizeIn ; i++)
 	{
 		m_array[i] = arrayIn[i];
 	}
@@ -96,7 +100,7 @@ CB::~CB()
 		delete [] m_array ;
 	}
 
-	trace("Destroy self.") ;
+	trace(L"Destroy self.") ;
 }
 
 //
@@ -125,7 +129,7 @@ HRESULT __stdcall CB::NondelegatingQueryInterface(const IID& iid,
 //
 HRESULT CB::Init()
 {
-	trace("Create Component 3, which is aggregated.") ;
+	trace(L"Create Component 3, which is aggregated.") ;
 	HRESULT hr = CoCreateInstance(CLSID_Component3,
 	                              GetOuterUnknown(),
 	                              CLSCTX_INPROC_SERVER,
@@ -134,22 +138,22 @@ HRESULT CB::Init()
 	                              (void**)&m_pUnknownInner) ;
 	if (FAILED(hr))
 	{
-		trace("Could not create inner component.", hr) ;
+		trace(L"Could not create inner component.", hr) ;
 		return E_FAIL ;
 	}
 
-	trace("Get pointer to interface IZ to cache.") ;
+	trace(L"Get pointer to interface IZ to cache.") ;
 	hr = m_pUnknownInner->QueryInterface(IID_IZ, (void**)&m_pIZ) ;
 	if (FAILED(hr))
 	{
-		trace("Inner component does not support IZ.", hr) ;
+		trace(L"Inner component does not support IZ.", hr) ;
 		m_pUnknownInner->Release() ;
 		m_pUnknownInner = NULL ;
 		return E_FAIL ;
 	}
 
 	// Decrement the reference count caused by the QI call.
-	trace("Got IZ interface pointer. Release reference.") ;
+	trace(L"Got IZ interface pointer. Release reference.") ;
 	GetOuterUnknown()->Release() ;
 
 	return S_OK ;

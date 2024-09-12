@@ -35,13 +35,13 @@ public:
 	FPCREATEINSTANCE CreateInstance ;
 
 	// Name of the component to register in the registry
-	const char* m_RegistryName ;
+	const wchar_t* m_RegistryName ;
 
 	// ProgID
-	const char* m_szProgID ;
+	const wchar_t* m_szProgID ;
 
 	// Version-independent ProgID
-	const char* m_szVerIndProgID ;
+	const wchar_t* m_szVerIndProgID ;
 
 	// Helper function for finding the class ID
 	BOOL IsClassID(const CLSID& clsid) const

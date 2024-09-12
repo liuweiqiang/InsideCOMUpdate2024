@@ -2,11 +2,13 @@
 // Client.cpp - client implementation
 //
 #include <objbase.h>
-#include <iostream.h>
+#include <iostream>
 #include <assert.h>
 
 #include "Util.h"
 #include "Iface.h"
+
+using namespace std;
 
 static inline void trace(char* msg)
 	{ Util::Trace("Client", msg, S_OK) ;} 

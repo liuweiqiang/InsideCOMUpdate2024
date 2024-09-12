@@ -2,16 +2,20 @@
 // Cmpnt1.cpp - Component 1
 //
 #include <objbase.h>
+#include <iostream>
+#include <sstream>
 
 #include "Iface.h"
 #include "Util.h"
 #include "CUnknown.h" // Base class for IUnknown
 #include "Cmpnt1.h"
 
-static inline void trace(char* msg)
-	{ Util::Trace("Component 1", msg, S_OK) ;}
-static inline void trace(char* msg, HRESULT hr)
-	{ Util::Trace("Component 1", msg, hr) ;}
+static inline void trace(const wchar_t* msg)
+	{ Util::Trace(L"Component 1", msg, S_OK) ;}
+static inline void trace(const wchar_t* msg, HRESULT hr)
+	{ Util::Trace(L"Component 1", msg, hr) ;}
+
+using namespace std;
 
 ///////////////////////////////////////////////////////////
 //
@@ -20,18 +24,18 @@ static inline void trace(char* msg, HRESULT hr)
 HRESULT __stdcall CA::FxStringIn(wchar_t* szIn)
 { 
 	// Display the incoming string.
-	ostrstream sout ;
-	sout << "FxStringIn received a string:  "
+	wostringstream sout ;
+	sout << L"FxStringIn received a string:  "
 	     << szIn
 	     << ends ;
-	trace(sout.str()) ;
+	trace(sout.str().c_str());
 	return S_OK ;
 }
 
 HRESULT __stdcall CA::FxStringOut(wchar_t** pszOut)
 {
 	const wchar_t wsz[] = L"[String from FxStringOut]" ;
-	const int iLength = (wcslen(wsz)+1)*sizeof(wchar_t) ;
+	const size_t iLength = (wcslen(wsz)+1)*sizeof(wchar_t) ;
 
 	// Allocate an outgoing string.
 
@@ -42,7 +46,7 @@ HRESULT __stdcall CA::FxStringOut(wchar_t** pszOut)
 	}
 	
 	// Copy string to output buffer.
-	wcscpy(pBuf, wsz) ;
+	wcscpy_s(pBuf, sizeof(pBuf) / sizeof(wchar_t), wsz);
 
 	*pszOut = pBuf ;
 	return S_OK ;
@@ -64,7 +68,7 @@ CA::CA(IUnknown* pUnknownOuter)
 //
 CA::~CA()
 {
-	trace("Destroy self.") ;
+	trace(L"Destroy self.") ;
 }
 
 //
@@ -79,7 +83,7 @@ HRESULT __stdcall CA::NondelegatingQueryInterface(const IID& iid,
 	}
 	else if (iid == IID_IY)
 	{
-		trace("Return IY interface of aggregated component.") ;
+		trace(L"Return IY interface of aggregated component.") ;
 		return m_pUnknownInner->QueryInterface(iid, ppv) ;
 	}
 	else if (iid == IID_IZ)
@@ -89,7 +93,7 @@ HRESULT __stdcall CA::NondelegatingQueryInterface(const IID& iid,
 	}
 	else if (iid == IID_IMarshal)
 	{
-		trace("The COM Library asked for IMarshal.") ;
+		trace(L"The COM Library asked for IMarshal.") ;
 		// We don't implement IMarshal.
 		return CUnknown::NondelegatingQueryInterface(iid, ppv) ;
 	}
@@ -105,7 +109,7 @@ HRESULT __stdcall CA::NondelegatingQueryInterface(const IID& iid,
 //
 HRESULT CA::Init()
 {
-	trace("Create Component 2, which is aggregated.") ;
+	trace(L"Create Component 2, which is aggregated.") ;
 	HRESULT hr = CoCreateInstance(CLSID_Component2, 
 	                              GetOuterUnknown(), 
 	                              CLSCTX_INPROC_SERVER,
@@ -114,22 +118,22 @@ HRESULT CA::Init()
 	                              (void**)&m_pUnknownInner) ;
 	if (FAILED(hr))
 	{
-		trace("Could not create inner component.", hr) ;
+		trace(L"Could not create inner component.", hr) ;
 		return E_FAIL ;
 	}
 
-	trace("Get pointer to interface IZ to cache.") ;
+	trace(L"Get pointer to interface IZ to cache.") ;
 	hr = m_pUnknownInner->QueryInterface(IID_IZ, (void**)&m_pIZ) ;
 	if (FAILED(hr))
 	{
-		trace("Inner component does not support IZ.", hr) ;
+		trace(L"Inner component does not support IZ.", hr) ;
 		m_pUnknownInner->Release() ;
 		m_pUnknownInner = NULL ;
 		return E_FAIL ;
 	}
 
 	// Decrement the reference count caused by the QI call.
-	trace("Got IZ interface pointer. Release reference.") ;
+	trace(L"Got IZ interface pointer. Release reference.") ;
 	GetOuterUnknown()->Release() ;
 	return S_OK ;
 }
