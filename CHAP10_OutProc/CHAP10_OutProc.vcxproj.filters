@@ -15,8 +15,71 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CHAP10_OutProc.cpp">
+    <ClCompile Include="..\CHAP10_InProc\CFACTORY.CPP">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\CMPNT1.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\CMPNT2.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\CMPNT3.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\REGISTRY.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\SERVER.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\CUNKNOWN.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\UTIL.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\guids.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OUTPROC.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\CHAP10_InProc\CFACTORY.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CHAP10_InProc\CMPNT1.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CHAP10_InProc\CMPNT2.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CHAP10_InProc\CMPNT3.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CHAP10_InProc\REGISTRY.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CHAP10_InProc\CUNKNOWN.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CHAP10_InProc\UTIL.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CHAP10_InProc\Iface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\CHAP10Orig\SERVER.ICO">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SERVER.RC">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

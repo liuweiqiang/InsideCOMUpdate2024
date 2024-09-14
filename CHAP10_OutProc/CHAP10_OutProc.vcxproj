@@ -70,6 +70,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)</OutDir>
+    <TargetName>Server</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -102,11 +106,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_OUTPROC_SERVER_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -127,7 +131,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CHAP10_OutProc.cpp" />
+    <ClCompile Include="..\CHAP10_InProc\CFACTORY.CPP" />
+    <ClCompile Include="..\CHAP10_InProc\CMPNT1.CPP" />
+    <ClCompile Include="..\CHAP10_InProc\CMPNT2.CPP" />
+    <ClCompile Include="..\CHAP10_InProc\CMPNT3.CPP" />
+    <ClCompile Include="..\CHAP10_InProc\CUNKNOWN.CPP" />
+    <ClCompile Include="..\CHAP10_InProc\guids.c" />
+    <ClCompile Include="..\CHAP10_InProc\REGISTRY.CPP" />
+    <ClCompile Include="..\CHAP10_InProc\SERVER.CPP" />
+    <ClCompile Include="..\CHAP10_InProc\UTIL.CPP" />
+    <ClCompile Include="OUTPROC.CPP" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\CHAP10_InProc\CFACTORY.H" />
+    <ClInclude Include="..\CHAP10_InProc\CMPNT1.H" />
+    <ClInclude Include="..\CHAP10_InProc\CMPNT2.H" />
+    <ClInclude Include="..\CHAP10_InProc\CMPNT3.H" />
+    <ClInclude Include="..\CHAP10_InProc\CUNKNOWN.H" />
+    <ClInclude Include="..\CHAP10_InProc\Iface.h" />
+    <ClInclude Include="..\CHAP10_InProc\REGISTRY.H" />
+    <ClInclude Include="..\CHAP10_InProc\UTIL.H" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\CHAP10Orig\SERVER.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SERVER.RC" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
