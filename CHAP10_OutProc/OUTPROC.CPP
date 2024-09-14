@@ -1,15 +1,20 @@
 #include <windows.h>
 #include <stdlib.h>
 
-#include "CUnknown.h"
-#include "CFactory.h"
-#include "Resource.h"
+#include "../CHAP10_InProc/CUNKNOWN.H"
+#include "../CHAP10_InProc/CFactory.h"
+#include "../CHAP10_InProc/UTIL.H"
+
+#include <iostream>
+using namespace std;
+
 
 ///////////////////////////////////////////////////////////
 //
 // Outproc.cpp
 //   - the component server
-//
+//   - window not working, so run: Server.exe "Embedding" | cat 
+//   -   to pipe the console output 
 HWND g_hWndListBox = NULL ;
 
 BOOL InitWindow(int nCmdShow) ;
@@ -37,18 +42,21 @@ extern "C" int WINAPI WinMain(HINSTANCE hInstance,
 	HRESULT hr = CoInitialize(NULL) ;
 	if (FAILED(hr))
 	{
+
 		return 0 ;
 	}
    
+	cout << "cmd arg: " << lpCmdLine << endl;
    
 	// Get Thread ID.
 	CFactory::s_dwThreadID = ::GetCurrentThreadId() ;
 	CFactory::s_hModule = hInstance ;
 
 	// Read the command line.
-	char szTokens[] = "-/" ;
-
-	char* szToken = strtok(lpCmdLine, szTokens) ; 
+	const char szTokens[] = "-/" ;
+	char* nextToken;
+	// char* szToken = strtok(lpCmdLine, szTokens) ; 
+	char* szToken = strtok_s(lpCmdLine, szTokens, &nextToken);
 	while (szToken != NULL)
 	{
 		if (_stricmp(szToken, "UnregServer") == 0)
@@ -71,7 +79,8 @@ extern "C" int WINAPI WinMain(HINSTANCE hInstance,
 			bUI = FALSE ;
 			break ;
 		}
-		szToken = strtok(NULL, szTokens) ;
+		// szToken = strtok(NULL, szTokens) ;
+		szToken = strtok_s(NULL, szTokens, &nextToken);
 	}
 
 	// If the user started us, then show UI.
@@ -126,9 +135,9 @@ BOOL InitWindow(int nCmdShow)
 	wcListview.hIcon = ::LoadIcon(CFactory::s_hModule,
 	                              MAKEINTRESOURCE(IDC_ICON)) ;
 	wcListview.hCursor = ::LoadCursor(NULL, IDC_ARROW) ;
-	wcListview.hbrBackground = ::GetStockObject(WHITE_BRUSH) ; 
+	wcListview.hbrBackground = (HBRUSH)::GetStockObject(WHITE_BRUSH);
 	wcListview.lpszMenuName = NULL ;  
-	wcListview.lpszClassName = "MyServerWinClass" ;
+	wcListview.lpszClassName = L"MyServerWinClass" ;
 
 	BOOL bResult = ::RegisterClass(&wcListview) ;
 	if (!bResult)
@@ -139,8 +148,8 @@ BOOL InitWindow(int nCmdShow)
 	HWND hWndMain ;
 
 	hWndMain = ::CreateWindow(
-		"MyServerWinClass",
-		"Component Server", 
+		L"MyServerWinClass",
+		L"Component Server", 
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT,
@@ -182,7 +191,7 @@ extern "C" LONG APIENTRY MainWndProc(
 
 			// Create a listbox for output.
 			g_hWndListBox = ::CreateWindow(
-				"LISTBOX",
+				L"LISTBOX",
 				NULL, 
 				WS_CHILD | WS_VISIBLE | LBS_USETABSTOPS
 					| WS_VSCROLL | LBS_NOINTEGRALHEIGHT,
@@ -195,7 +204,7 @@ extern "C" LONG APIENTRY MainWndProc(
 			{
 				// Listbox not created.
 				::MessageBox(NULL,
-				             "Listbox not created!",
+				             L"Listbox not created!",
 				             NULL,
 				             MB_OK) ;
 				return -1 ;

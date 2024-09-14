@@ -3,17 +3,18 @@
 //
 #include <objbase.h>
 #include <iostream>
+#include <sstream>
 #include <assert.h>
 
-#include "Util.h"
-#include "Iface.h"
+#include "../CHAP10_InProc/UTIL.H"
+#include "../CHAP10_InProc/Iface.h"
 
 using namespace std;
 
-static inline void trace(char* msg)
-	{ Util::Trace("Client", msg, S_OK) ;} 
-static inline void trace(char* msg, HRESULT hr)
-	{ Util::Trace("Client", msg, hr) ;}
+static inline void trace(const wchar_t* msg)
+	{ Util::Trace(L"Client", msg, S_OK) ;} 
+static inline void trace(const wchar_t* msg, HRESULT hr)
+	{ Util::Trace(L"Client", msg, hr) ;}
 
 int main()
 {
@@ -27,12 +28,12 @@ int main()
 	if (i == 1)
 	{
 		clsctx = CLSCTX_INPROC_SERVER ;
-		trace("Attempt to create in-proc component.") ;
+		trace(L"Attempt to create in-proc component.") ;
 	}
 	else
 	{
 		clsctx = CLSCTX_LOCAL_SERVER ;
-		trace("Attempt to create local component.") ;
+		trace(L"Attempt to create local component.") ;
 	}
 
 	// Initialize COM Library
@@ -44,25 +45,25 @@ int main()
 	                              IID_IX, (void**)&pIX) ;
 	if (SUCCEEDED(hr))
 	{
-		trace("Successfully created component.") ;
-		trace("Use interface IX.") ;
+		trace(L"Successfully created component.") ;
+		trace(L"Use interface IX.") ;
 		wchar_t* szOut = NULL ;
-		hr = pIX->FxStringIn(L"This is the test.") ;
+		hr = pIX->FxStringIn((wchar_t*)L"This is the test.") ;
 		assert(SUCCEEDED(hr)) ;
 		hr = pIX->FxStringOut(&szOut) ;
 		assert(SUCCEEDED(hr)) ;
 
 		// Display returned string.
-		ostrstream sout ;
+		wostringstream sout ;
 		sout << "FxStringOut returned a string:  "
 		     << szOut
 		     << ends ;
-		trace(sout.str()) ;
+		trace(sout.str().c_str()) ;
 
 		// Free the returned string.
 		::CoTaskMemFree(szOut) ;
 
-		trace("Get interface IY.") ;
+		trace(L"Get interface IY.") ;
 		IY* pIY = NULL ;
 		hr = pIX->QueryInterface(IID_IY, (void**)&pIY) ;
 		if (SUCCEEDED(hr))
@@ -88,7 +89,7 @@ int main()
 			assert(SUCCEEDED(hr)) ;
 
 			// Display the array returned from the function.
-			ostrstream sout ;
+			wostringstream sout ;
 			sout	<< "FyArray returned " 
 			      << sizeOut
 			      << " elements: " ;
@@ -97,20 +98,20 @@ int main()
 				sout << " " << arrayOut[i] ;
 			}
 			sout << "." << ends ;
-			trace(sout.str()) ;
+			trace(sout.str().c_str()) ;
 
 			// Cleanup
-			trace("Release IY.") ;
+			trace(L"Release IY.") ;
 			delete [] arrayOut ;
 
 			pIY->Release() ;
 		}
 		else
 		{
-			trace("Could not get interface IY from IX.", hr) ;
+			trace(L"Could not get interface IY from IX.", hr) ;
 		}
 
-		trace("Get interface IZ.") ;
+		trace(L"Get interface IZ.") ;
 		IZ* pIZ = NULL ;
 		hr = pIX->QueryInterface(IID_IZ, (void**)&pIZ) ;
 		if (SUCCEEDED(hr))
@@ -127,26 +128,26 @@ int main()
 			Point3d ptOut ;
 			hr = pIZ->FzStructOut(&ptOut) ;
 			assert(SUCCEEDED(hr)) ;
-			strstream sout ;
+			wostringstream sout ;
 			sout << "FzStructOut returned ("
 			     << ptOut.x << ", "
 			     << ptOut.y << ", "
 			     << ptOut.z << ")."
 			     << ends ;
-			trace(sout.str()) ;
+			trace(sout.str().c_str()) ;
 
 			pIZ->Release() ;
 		}
 		else
 		{
-			trace("Could not get interface IZ from IX.", hr) ;
+			trace(L"Could not get interface IZ from IX.", hr) ;
 		}
-		trace("Release IX.") ;
+		trace(L"Release IX.") ;
 		pIX->Release() ;
 	}
 	else
 	{
-		trace("Could not create component.", hr) ;
+		trace(L"Could not create component.", hr) ;
 	}
 
 	// Uninitialize COM Library
