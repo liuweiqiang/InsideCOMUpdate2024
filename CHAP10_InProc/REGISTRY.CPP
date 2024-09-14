@@ -169,7 +169,7 @@ void CLSIDtowchar_t(const CLSID& clsid,
 	wcscpy_s(szCLSID, length, wszCLSID);
 
 	// Free memory.
-	//CoTaskMemFree(szCLSID);
+	CoTaskMemFree(wszCLSID);
 }
 
 //
