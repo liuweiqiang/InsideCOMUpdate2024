@@ -12,7 +12,8 @@
 #include "util.h"
 using namespace std;
 
-#ifdef _OUTPROC_SERVER_ 
+// having trouble with creating a window, so use concole
+#ifdef NO_OUTPROC_SERVER_ 
 // We are building a local or remote server.
 	// Listbox window handle
 	extern HWND g_hWndListBox ;
@@ -27,7 +28,7 @@ using namespace std;
 #include <iostream>
 	static inline void output(const wchar_t* sz)
 	{
-		cout << sz << endl ;
+		wcout << sz << endl ;
 	}
 #endif //_OUTPROC_SERVER_
 
@@ -57,8 +58,8 @@ void Trace(const wchar_t* szLabel, const wchar_t* szText, HRESULT hr)
 //
 void ErrorMessage(HRESULT hr)
 {
+
 	void* pMsgBuf ;
- 
 	::FormatMessage( 
 		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 		NULL,
@@ -71,6 +72,7 @@ void ErrorMessage(HRESULT hr)
 
 	wchar_t buf[256] ;
 	wsprintf(buf, L"Error (%x): %s", hr, (wchar_t*)pMsgBuf) ;
+	// wsprintf(buf, L"Error (%x): %s", hr, L"error with hr.");
 	output(buf) ;
 		
 	// Free the buffer.
@@ -79,18 +81,3 @@ void ErrorMessage(HRESULT hr)
 
 } ; // End Namespace Util
 
-
-//
-// Overloaded ostream insertion operator
-// Converts from wchar_t to char
-//
-ostream& operator<< ( ostream& os, const wchar_t* wsz )
-{
-	// Length of incoming string
-	int iLength = wcslen(wsz)+1 ;
-
-	// Send it out.
-	os << wsz ;
-
-	return os ;
-}
