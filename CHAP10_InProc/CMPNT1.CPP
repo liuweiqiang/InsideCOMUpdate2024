@@ -39,14 +39,15 @@ HRESULT __stdcall CA::FxStringOut(wchar_t** pszOut)
 
 	// Allocate an outgoing string.
 
-	wchar_t* pBuf = static_cast<wchar_t*>(::CoTaskMemAlloc(iLength)) ;
+	wchar_t* pBuf = static_cast<wchar_t*>(::CoTaskMemAlloc(iLength));
+
 	if (pBuf == NULL)
 	{
 		return E_OUTOFMEMORY ;
 	}
 	
 	// Copy string to output buffer.
-	wcscpy_s(pBuf, sizeof(pBuf) / sizeof(wchar_t), wsz);
+	wcscpy_s(pBuf, iLength / sizeof(wchar_t), wsz);
 
 	*pszOut = pBuf ;
 	return S_OK ;
