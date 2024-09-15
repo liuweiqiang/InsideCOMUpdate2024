@@ -8,6 +8,16 @@
 
 #include "Registry.h"
 #include "CFactory.h"
+#include "UTIL.H"
+
+static inline void trace(const wchar_t* msg)
+{
+	Util::Trace(L"Component", msg, S_OK);
+}
+static inline void trace(const wchar_t* msg, HRESULT hr)
+{
+	Util::Trace(L"Component", msg, hr);
+}
 
 ///////////////////////////////////////////////////////////
 //
@@ -192,6 +202,36 @@ HRESULT CFactory::RegisterAll()
 		               g_FactoryDataArray[i].m_szProgID,
 		               *(g_FactoryDataArray[i].m_pLIBID)) ;
 	}
+	
+	// Get the fullname of the server's executable.
+	wchar_t szModule[512] ;
+	DWORD dwResult = ::GetModuleFileName(CFactory::s_hModule,
+											szModule,
+											512) ;
+
+	// Split the fullname to get the pathname.
+	wchar_t szDrive[_MAX_DRIVE];
+	wchar_t szDir[_MAX_DIR];
+	_wsplitpath_s(szModule, szDrive, _MAX_DRIVE, szDir, _MAX_DIR, NULL, 0, NULL, 0) ;
+
+	// Append name of registry.
+	wchar_t szTypeLibFullName[_MAX_PATH];
+	wsprintf(szTypeLibFullName,
+			L"%s%s%s",
+			szDrive,
+			szDir,
+			szTypeLibName) ;
+
+	// Ensure that the type library is registered.
+	ITypeLib* pITypeLib = NULL;
+	HRESULT hr = ::LoadTypeLib(szTypeLibFullName,&pITypeLib);
+	hr = RegisterTypeLib(pITypeLib, szTypeLibFullName, NULL);
+	if (FAILED(hr))
+	{
+		trace(L"RegisterTypeLib Failed.", hr);
+		return hr;
+	}
+	
 	return S_OK ;
 }   
 	
@@ -245,7 +285,7 @@ STDAPI DllUnregisterServer()
 //
 // DLL module information
 //
-BOOL APIENTRY DllMain(HANDLE hModule, 
+BOOL APIENTRY DllMain(HMODULE hModule,
                       DWORD dwReason, 
                       void* lpReserved )
 {

@@ -8,10 +8,10 @@
 #include "CFactory.h"
 #include "Util.h"
 
-static inline void trace(char* msg)
-	{Util::Trace("CUnknown", msg, S_OK) ;} 
-static inline void trace(char* msg, HRESULT hr)
-	{Util::Trace("CUnknown", msg, hr) ;}
+static inline void trace(const wchar_t* msg)
+	{Util::Trace(L"CUnknown", msg, S_OK) ;} 
+static inline void trace(const wchar_t* msg, HRESULT hr)
+	{Util::Trace(L"CUnknown", msg, hr) ;}
 
 ///////////////////////////////////////////////////////////
 //
@@ -31,14 +31,14 @@ CUnknown::CUnknown(IUnknown* pUnknownOuter)
 	// Set m_pUnknownOuter pointer.
 	if (pUnknownOuter == NULL)
 	{
-		trace("Not aggregating; delegate to nondelegating IUnknown.") ;
+		trace(L"Not aggregating; delegate to nondelegating IUnknown.") ;
 		m_pUnknownOuter = reinterpret_cast<IUnknown*>
 		                     (static_cast<INondelegatingUnknown*>
 		                     (this)) ;  // notice cast
 	}
 	else
 	{
-		trace("Aggregating; delegate to outer IUnknown.") ;
+		trace(L"Aggregating; delegate to outer IUnknown.") ;
 		m_pUnknownOuter = pUnknownOuter ;
 	}
 
@@ -62,7 +62,7 @@ CUnknown::~CUnknown()
 //
 void CUnknown::FinalRelease()
 {
-	trace("Increment reference count for final release.") ;
+	trace(L"Increment reference count for final release.") ;
 	m_cRef = 1 ;
 }
 

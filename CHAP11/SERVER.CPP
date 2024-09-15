@@ -27,9 +27,9 @@
 CFactoryData g_FactoryDataArray[] =
 {
 	{&CLSID_Component, CA::CreateInstance, 
-		"Inside COM, Chapter 11 Example", // Friendly Name
-		"InsideCOM.Chap11",        // ProgID
-		"InsideCOM.Chap11.1",      // Version-independent ProgID
+		L"Inside COM, Chapter 11 Example", // Friendly Name
+		L"InsideCOM.Chap11",        // ProgID
+		L"InsideCOM.Chap11.1",      // Version-independent ProgID
 		&LIBID_ServerLib,          // Type Library ID
 		NULL, 0}
 } ;

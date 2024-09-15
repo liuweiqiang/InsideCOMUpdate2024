@@ -4,20 +4,13 @@
 //
 // Util.h - Shared utilities
 //
-#include <strstrea.h>
+#include <iostream>
 
 namespace Util
 {
-	void Trace(char* szLabel, char* szText, HRESULT hr) ;
+	void Trace(const wchar_t* szLabel, const wchar_t* szText, HRESULT hr) ;
 
 	void ErrorMessage(HRESULT hr) ;
 } ;
-
-
-//
-// Overloaded insertion operator for converting from
-// Unicode (wchar_t) to non-Unicode.
-//
-ostream& operator<< ( ostream& os, const wchar_t* wsz ) ;
 
 #endif // __Util_h__

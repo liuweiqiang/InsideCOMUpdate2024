@@ -15,8 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MathClient.cpp">
+    <ClCompile Include="..\CHAP11\DCLIENT.CPP">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\CHAP11\Guids.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CHAP11\UTIL.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\CHAP11\UTIL.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

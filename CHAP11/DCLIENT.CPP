@@ -5,12 +5,15 @@
 //   through the dispinterface.
 //
 #include <windows.h>
+#include <iostream>
+#include <sstream>
 #include "Util.h"
+using namespace std;
 
-static inline void trace(char* msg)
-	{ Util::Trace("DClient", msg, S_OK) ;}
-static inline void trace(char* msg, HRESULT hr)
-	{ Util::Trace("DClient", msg, hr) ;}
+static inline void trace(const wchar_t* msg)
+	{ Util::Trace(L"DClient", msg, S_OK) ;}
+static inline void trace(const wchar_t* msg, HRESULT hr)
+	{ Util::Trace(L"DClient", msg, hr) ;}
 
 int main()
 {
@@ -24,18 +27,18 @@ int main()
 	if (i == 1)
 	{
 		clsctx = CLSCTX_INPROC_SERVER ;
-		trace("Attempt to create in-proc component.") ;
+		trace(L"Attempt to create in-proc component.") ;
 	}
 	else
 	{
 		clsctx = CLSCTX_LOCAL_SERVER ;
-		trace("Attempt to create local component.") ;
+		trace(L"Attempt to create local component.") ;
 	}
 
 	HRESULT hr = OleInitialize(NULL) ;
 	if (FAILED(hr))
 	{
-		trace("Failed to initialize.", hr) ;
+		trace(L"Failed to initialize.", hr) ;
 		return 1 ;
 	}
 
@@ -45,7 +48,7 @@ int main()
  	hr = ::CLSIDFromProgID(progid, &clsid) ;
 	if(FAILED(hr))
 	{
-		trace("Failed to get CLSID.", hr) ;
+		trace(L"Failed to get CLSID.", hr) ;
 		return 1 ;
 	}
 
@@ -58,25 +61,25 @@ int main()
 	                        (void**)&pIDispatch) ;
 	if (FAILED(hr))
 	{
-		trace("Create instance failed.", hr) ;
+		trace(L"Create instance failed.", hr) ;
 		OleUninitialize() ;
 		return 1 ;
 	}
-	trace("CoCreateInstance succeeded.") ;
+	trace(L"CoCreateInstance succeeded.") ;
 
 	// First we need to get the IDs for the function names.
-	trace("Get DispID for function \"Fx\".") ;
+	trace(L"Get DispID for function \"Fx\".") ;
 
 	DISPID dispid ;	
-	OLECHAR* name = L"Fx" ;
+	const OLECHAR* name = L"Fx" ;
 	hr = pIDispatch->GetIDsOfNames(IID_NULL,
-	                               &name,
+	                                (LPOLESTR*) & name,
 	                               1,
 	                               GetUserDefaultLCID(),
 	                               &dispid) ;
 	if (FAILED(hr))
 	{
-		trace("Query GetIDsOfNames failed.", hr) ;
+		trace(L"Query GetIDsOfNames failed.", hr) ;
 		pIDispatch->Release() ;
 		return 1 ;
 	}
@@ -89,7 +92,7 @@ int main()
 		0     // Zero named arguments
 	} ;
 
-	trace("Invoke the function \"Fx\".") ;
+	trace(L"Invoke the function \"Fx\".") ;
 	hr = pIDispatch->Invoke(dispid,
 	                        IID_NULL,
 	                        GetUserDefaultLCID(),
@@ -100,7 +103,7 @@ int main()
 	                        NULL) ;
 	if (FAILED(hr))
 	{
-		trace("Invoke call failed.", hr) ;
+		trace(L"Invoke call failed.", hr) ;
 		pIDispatch->Release() ;
 		return 1 ;
 	}
@@ -108,16 +111,16 @@ int main()
 	//
 	// Now pass a BSTR to the component.
 	//
-	trace("Get DispID for function \"FxStringIn\".") ;
+	trace(L"Get DispID for function \"FxStringIn\".") ;
 	name = L"FxStringIn" ;
 	hr = pIDispatch->GetIDsOfNames(IID_NULL,
-	                               &name,
+	                               (LPOLESTR*) & name,
 	                               1,
 	                               GetUserDefaultLCID(),
 	                               &dispid) ;
 	if (FAILED(hr))
 	{
-		trace("Query GetIDsOfNames failed.", hr) ;
+		trace(L"Query GetIDsOfNames failed.", hr) ;
 		pIDispatch->Release() ;
 		return 1 ;
 	}
@@ -145,7 +148,7 @@ int main()
 	param.rgdispidNamedArgs = NULL ;  // Named arguments
 
 
-	trace("Invoke the function \"FxStringIn\".") ;
+	trace(L"Invoke the function \"FxStringIn\".") ;
 	hr = pIDispatch->Invoke(dispid,
 	                        IID_NULL,
 	                        GetUserDefaultLCID(),
@@ -156,7 +159,7 @@ int main()
 	                        NULL) ;
 	if (FAILED(hr))
 	{
-		trace("Invoke call failed.", hr) ;
+		trace(L"Invoke call failed.", hr) ;
 		pIDispatch->Release() ;
 		return 1 ;
 	}
@@ -169,16 +172,16 @@ int main()
 	//
 
 	// Get the dispid.
-	trace("Get DispID for function \"FxStringOut\".") ;
+	trace(L"Get DispID for function \"FxStringOut\".") ;
 	name = L"FxStringOut" ;
 	hr = pIDispatch->GetIDsOfNames(IID_NULL,
-	                               &name,
+	                               (LPOLESTR*) & name,
 	                               1,
 	                               GetUserDefaultLCID(),
 	                               &dispid) ;
 	if (FAILED(hr))
 	{
-		trace("Query GetIDsOfNames failed.", hr) ;
+		trace(L"Query GetIDsOfNames failed.", hr) ;
 		pIDispatch->Release() ;
 		return 1 ;
 	}
@@ -188,7 +191,7 @@ int main()
 	::VariantInit(&varResult) ;
 
 	// Invoke the function.
-	trace("Invoke the function \"FxStringOut\".") ;
+	trace(L"Invoke the function \"FxStringOut\".") ;
 	hr = pIDispatch->Invoke(dispid,
 	                        IID_NULL,
 	                        GetUserDefaultLCID(),
@@ -199,7 +202,7 @@ int main()
 	                        NULL) ;
 	if (FAILED(hr))
 	{
-		trace("Invoke call failed.", hr) ;
+		trace(L"Invoke call failed.", hr) ;
 		pIDispatch->Release() ;
 		return 1 ;
 	}
@@ -207,11 +210,11 @@ int main()
 	// Display the returned string.
 	if (varResult.vt == VT_BSTR)
 	{
-		strstream sout ;
-		sout << "String returned from component: "
+		wostringstream sout ;
+		sout << L"String returned from component: "
 		     << varResult.bstrVal
 		     << ends ;
-		trace(sout.str()) ;
+		trace(sout.str().c_str()) ;
 
 		// Free the string.
 		::SysFreeString(varResult.bstrVal) ;
@@ -220,23 +223,23 @@ int main()
 	//
 	// Show how to handle a function which returns an EXCEPINFO.
 	//
-	trace("Get DispID for function \"FxFakeError\"") ;
+	trace(L"Get DispID for function \"FxFakeError\"") ;
 	name = L"FxFakeError" ;
 	hr = pIDispatch->GetIDsOfNames(IID_NULL,
-	                               &name,
+	                               (LPOLESTR*) & name,
 	                               1,
 	                               GetUserDefaultLCID(),
 	                               &dispid) ;
 	if (FAILED(hr))
 	{
-		trace("Query GetIDsOfNames failed.", hr) ;
+		trace(L"Query GetIDsOfNames failed.", hr) ;
 		pIDispatch->Release() ;
 		return 1 ;
 	}
 
 	EXCEPINFO excepinfo ;
 
-	trace("Invoke the function \"FxFakeError\".") ;
+	trace(L"Invoke the function \"FxFakeError\".") ;
 	hr = pIDispatch->Invoke(dispid,
 	                        IID_NULL,
 	                        GetUserDefaultLCID(),
@@ -248,21 +251,21 @@ int main()
 
 	if (FAILED(hr))
 	{
-		trace("FxFakeError failed.", hr) ;
+		trace(L"FxFakeError failed.", hr) ;
 		if (hr == DISP_E_EXCEPTION)
 		{
-			trace("We have error information from the component.") ;
+			trace(L"We have error information from the component.") ;
 
 			if (excepinfo.pfnDeferredFillIn != NULL)
 			{
 				(*(excepinfo.pfnDeferredFillIn))(&excepinfo) ;
 			}
 
-			strstream sout ;
-			sout << "Information from component:  "
+			wostringstream sout ;
+			sout << L"Information from component:  "
 			     << excepinfo.bstrSource
 			     << ends ;
-			trace(sout.str()) ;
+			trace(sout.str().c_str()) ;
 		}
 	}
 

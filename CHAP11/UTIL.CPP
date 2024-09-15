@@ -7,7 +7,7 @@
 #include <stdio.h>    //sprintf
 #include <stdlib.h>
 #include <assert.h>
-// #include <tchar.h>
+// #include <twchar_t.h>
 
 #include "util.h"
 
@@ -16,17 +16,19 @@
 	// Listbox window handle
 	extern HWND g_hWndListBox ;
 
-	static inline void output(const char* sz)
+	static inline void output(const wchar_t* sz)
 	{
 		::SendMessage(g_hWndListBox, LB_ADDSTRING, 0, (LPARAM)sz) ;
 	}
 
 #else
 // We are building an in-proc server.
-#include <iostream.h>
-	static inline void output(const char* sz)
+#include <iostream>
+using namespace std;
+
+	static inline void output(const wchar_t* sz)
 	{
-		cout << sz << endl ;
+		wcout << sz << endl ;
 	}
 #endif //_OUTPROC_SERVER_
 
@@ -39,10 +41,10 @@ namespace Util
 //
 // Print out a message with a label.
 //
-void Trace(char* szLabel, char* szText, HRESULT hr)
+void Trace(const wchar_t* szLabel, const wchar_t* szText, HRESULT hr)
 {
-	char buf[256] ;
-	sprintf(buf, "%s: \t%s", szLabel, szText) ;
+	wchar_t buf[256] ;
+	wsprintf(buf, L"%s: \t%s", szLabel, szText) ;
 	output(buf) ;
 
 	if (FAILED(hr))
@@ -68,8 +70,8 @@ void ErrorMessage(HRESULT hr)
 		NULL 
 	) ;
 
-	char buf[256] ;
-	sprintf(buf, "Error (%x): %s", hr, (char*)pMsgBuf) ;
+	wchar_t buf[256] ;
+	wsprintf(buf, L"Error (%x): %s", hr, (wchar_t*)pMsgBuf) ;
 	output(buf) ;
 		
 	// Free the buffer.
@@ -78,26 +80,3 @@ void ErrorMessage(HRESULT hr)
 
 } ; // End Namespace Util
 
-
-//
-// Overloaded ostream insertion operator
-// Converts from wchar_t to char
-//
-ostream& operator<< ( ostream& os, const wchar_t* wsz )
-{
-	// Length of incoming string
-	int iLength = wcslen(wsz)+1 ;
-
-	// Allocate buffer for converted string.
-	char* psz = new char[iLength] ;
-
-	// Convert from wchar_t to char.
-	wcstombs(psz, wsz, iLength) ;
-
-	// Send it out.
-	os << psz ;
-
-	// cleanup
-	delete [] psz ;
-	return os ;
-}

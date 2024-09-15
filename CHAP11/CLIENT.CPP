@@ -4,15 +4,17 @@
 //   through the vtbl.
 //
 #include <objbase.h>
-#include <iostream.h>
+#include <iostream>
+#include <sstream>
 
 #include "Util.h"
 #include "Iface.h"
+using namespace std;
 
-static inline void trace(char* msg)
-	{ Util::Trace("Client", msg, S_OK) ;} 
-static inline void trace(char* msg, HRESULT hr)
-	{ Util::Trace("Client", msg, hr) ;}
+static inline void trace(const wchar_t* msg)
+	{ Util::Trace(L"Client", msg, S_OK) ;} 
+static inline void trace(const wchar_t* msg, HRESULT hr)
+	{ Util::Trace(L"Client", msg, hr) ;}
 
 int main()
 {
@@ -26,12 +28,12 @@ int main()
 	if (i == 1)
 	{
 		clsctx = CLSCTX_INPROC_SERVER ;		
-		trace("Attempt to create in-proc component.") ;
+		trace(L"Attempt to create in-proc component.") ;
 	}
 	else
 	{
 		clsctx = CLSCTX_LOCAL_SERVER ;		
-		trace("Attempt to create local component.") ;
+		trace(L"Attempt to create local component.") ;
 	}
 
 	// Initialize COM Library
@@ -45,9 +47,9 @@ int main()
 	                              (void**)&pIX) ;
 	if (SUCCEEDED(hr))
 	{
-		trace("Successfully created component.") ;
-		trace("Use interface IX.") ;
-		wchar_t* wszIn = L"This is the test." ;
+		trace(L"Successfully created component.") ;
+		trace(L"Use interface IX.") ;
+		const wchar_t* wszIn = L"This is the test." ;
 		BSTR bstrIn ;
 		bstrIn = ::SysAllocString(wszIn) ; 
 		pIX->FxStringIn(bstrIn) ; 
@@ -57,19 +59,19 @@ int main()
 		pIX->FxStringOut(&bstrOut ) ;
 
 		// Display returned string.
-		ostrstream sout ;
+		wostringstream sout ;
 		sout << "FxStringOut returned a string:  "
 		     << bstrOut 
 		     << ends;
-		trace(sout.str()) ;
+		trace(sout.str().c_str()) ;
 		::SysFreeString(bstrOut ) ;
 
-		trace("Release IX.") ;
+		trace(L"Release IX.") ;
 		pIX->Release() ;
 	}
 	else
 	{
-		trace("Could not create component.", hr);
+		trace(L"Could not create component.", hr);
 	}
 
 	// Uninitialize COM Library
