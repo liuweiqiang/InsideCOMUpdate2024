@@ -15,28 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dlldata.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="guids.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="proxy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="PROXY.DEF">
+    <None Include="readme" />
+    <None Include="..\CHAP10_InProc\PROXY.DEF">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="..\CHAP10_InProc\SERVER.IDL">
+    <ClCompile Include="..\CHAP10_InProc\guids.c">
       <Filter>Source Files</Filter>
-    </Midl>
+    </ClCompile>
+    <ClCompile Include="..\CHAP10_InProc\proxy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dlldata.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Iface.h">
+    <ClInclude Include="..\CHAP10_InProc\Iface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

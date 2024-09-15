@@ -121,7 +121,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <ModuleDefinitionFile>PROXY.DEF</ModuleDefinitionFile>
+      <ModuleDefinitionFile>../CHAP10_InProc/PROXY.DEF</ModuleDefinitionFile>
       <AdditionalDependencies>kernel32.lib;uuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
@@ -152,18 +152,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\CHAP10_InProc\PROXY.DEF" />
+    <None Include="readme" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\CHAP10_InProc\guids.c" />
+    <ClCompile Include="..\CHAP10_InProc\proxy.c" />
     <ClCompile Include="dlldata.c" />
-    <ClCompile Include="guids.c" />
-    <ClCompile Include="proxy.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="PROXY.DEF" />
-  </ItemGroup>
-  <ItemGroup>
-    <Midl Include="..\CHAP10_InProc\SERVER.IDL" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Iface.h" />
+    <ClInclude Include="..\CHAP10_InProc\Iface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

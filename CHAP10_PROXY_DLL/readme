@@ -1,0 +1,7 @@
+to make proxy.dll, I had to do the following tweaks:
+1. in dlldata.c, add
+
+    #pragma comment(lib, "rpcrt4.lib")
+
+2. in an addmin enabled shell
+    regsvr32 proxy.dll

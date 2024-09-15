@@ -10,7 +10,7 @@
    /dlldata command line option
 
 *********************************************************/
-
+#pragma comment(lib, "rpcrt4.lib")
 
 #include <rpcproxy.h>
 
