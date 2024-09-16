@@ -137,7 +137,6 @@
     <ClInclude Include="..\CHAP11\REGISTRY.H" />
     <ClInclude Include="..\CHAP11\UTIL.H" />
     <ClInclude Include="..\CHAP11_DLL\Iface.h" />
-    <ClInclude Include="framework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\CHAP11\CFACTORY.CPP" />
