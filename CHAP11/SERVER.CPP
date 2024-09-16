@@ -1,5 +1,5 @@
 #include "CFactory.h"
-#include "Iface.h"
+#include "../CHAP11_DLL/Iface.h"
 #include "Cmpnt.h"
 
 ///////////////////////////////////////////////////////////

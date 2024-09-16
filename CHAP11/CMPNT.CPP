@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "Iface.h"
+#include "../CHAP11_DLL/Iface.h"
 #include "Util.h"
 #include "CUnknown.h"
 #include "CFactory.h" // Needed for module handle

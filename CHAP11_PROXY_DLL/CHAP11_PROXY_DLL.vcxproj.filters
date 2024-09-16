@@ -15,18 +15,29 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\CHAP11\DCLIENT.CPP">
+    <None Include="..\CHAP11\PROXY.DEF">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="readme" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="..\CHAP11\SERVER.IDL">
+      <Filter>Source Files</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dlldata.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\CHAP11\UTIL.CPP">
+    <ClCompile Include="guids.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\CHAP11_DLL\Guids.c">
+    <ClCompile Include="proxy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\CHAP11\UTIL.H">
+    <ClInclude Include="Iface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

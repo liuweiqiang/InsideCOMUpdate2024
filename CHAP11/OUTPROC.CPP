@@ -1,9 +1,13 @@
 #include <windows.h>
 #include <stdlib.h>
 
-#include "CUnknown.h"
-#include "CFactory.h"
-#include "Resource.h"
+#include "../CHAP11/CUNKNOWN.H"
+#include "../CHAP11/CFactory.h"
+#include "../CHAP11/UTIL.H"
+
+#include <iostream>
+using namespace std;
+
 
 ///////////////////////////////////////////////////////////
 //
@@ -40,6 +44,8 @@ extern "C" int WINAPI WinMain(HINSTANCE hInstance,
 		return 0 ;
 	}
    
+
+	cout << "cmd arg: " << lpCmdLine << endl;
    
 	// Get Thread ID.
 	CFactory::s_dwThreadID = ::GetCurrentThreadId() ;
@@ -47,8 +53,9 @@ extern "C" int WINAPI WinMain(HINSTANCE hInstance,
 
 	// Read the command line.
 	char szTokens[] = "-/" ;
+	char* nextToken;
+	char* szToken = strtok_s(lpCmdLine, szTokens, &nextToken);
 
-	char* szToken = strtok(lpCmdLine, szTokens) ; 
 	while (szToken != NULL)
 	{
 		if (_stricmp(szToken, "UnregServer") == 0)
@@ -71,7 +78,7 @@ extern "C" int WINAPI WinMain(HINSTANCE hInstance,
 			bUI = FALSE ;
 			break ;
 		}
-		szToken = strtok(NULL, szTokens) ;
+		szToken = strtok_s(NULL, szTokens, &nextToken);
 	}
 
 	// If the user started us, then show UI.
@@ -126,9 +133,9 @@ BOOL InitWindow(int nCmdShow)
 	wcListview.hIcon = ::LoadIcon(CFactory::s_hModule,
 	                              MAKEINTRESOURCE(IDC_ICON)) ;
 	wcListview.hCursor = ::LoadCursor(NULL, IDC_ARROW) ;
-	wcListview.hbrBackground = ::GetStockObject(WHITE_BRUSH) ; 
+	wcListview.hbrBackground = (HBRUSH)::GetStockObject(WHITE_BRUSH);
 	wcListview.lpszMenuName = NULL ;  
-	wcListview.lpszClassName = "MyServerWinClass" ;
+	wcListview.lpszClassName = L"MyServerWinClass" ;
 
 	BOOL bResult = ::RegisterClass(&wcListview) ;
 	if (!bResult)
@@ -139,8 +146,8 @@ BOOL InitWindow(int nCmdShow)
 	HWND hWndMain ;
 
 	hWndMain = ::CreateWindow(
-		"MyServerWinClass",
-		"Component Server", 
+		L"MyServerWinClass",
+		L"Component Server", 
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT,
@@ -182,7 +189,7 @@ extern "C" LONG APIENTRY MainWndProc(
 
 			// Create a listbox for output.
 			g_hWndListBox = ::CreateWindow(
-				"LISTBOX",
+				L"LISTBOX",
 				NULL, 
 				WS_CHILD | WS_VISIBLE | LBS_USETABSTOPS
 					| WS_VSCROLL | LBS_NOINTEGRALHEIGHT,
@@ -195,7 +202,7 @@ extern "C" LONG APIENTRY MainWndProc(
 			{
 				// Listbox not created.
 				::MessageBox(NULL,
-				             "Listbox not created!",
+				             L"Listbox not created!",
 				             NULL,
 				             MB_OK) ;
 				return -1 ;

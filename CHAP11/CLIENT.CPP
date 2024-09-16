@@ -8,7 +8,7 @@
 #include <sstream>
 
 #include "Util.h"
-#include "Iface.h"
+#include "../CHAP11_DLL/Iface.h"
 using namespace std;
 
 static inline void trace(const wchar_t* msg)

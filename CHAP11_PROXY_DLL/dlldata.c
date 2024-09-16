@@ -10,6 +10,7 @@
    /dlldata command line option
 
 *********************************************************/
+#pragma comment(lib, "rpcrt4.lib")
 
 #define PROXY_DELEGATION
 
@@ -19,12 +20,12 @@
 extern "C"   {
 #endif
 
-EXTERN_PROXY_FILE( Server )
+EXTERN_PROXY_FILE( SERVER )
 
 
 PROXYFILE_LIST_START
 /* Start of list */
-  REFERENCE_PROXY_FILE( Server ),
+  REFERENCE_PROXY_FILE( SERVER ),
 /* End of list */
 PROXYFILE_LIST_END
 

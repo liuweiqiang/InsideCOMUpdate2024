@@ -13,7 +13,8 @@ using namespace std;
 //
 // Outproc.cpp
 //   - the component server
-//   - window not working, so run: Server.exe "Embedding" | cat 
+//   - window not working, so run it in a shell supporting "cat":
+//               Server.exe "Embedding" | cat 
 //   -   to pipe the console output 
 HWND g_hWndListBox = NULL ;
 

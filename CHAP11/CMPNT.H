@@ -2,7 +2,7 @@
 // Cmpnt.cpp - Component
 //
 
-#include "Iface.h"
+#include "../CHAP11_DLL/Iface.h"
 #include "CUnknown.h" 
 
 ///////////////////////////////////////////////////////////
